@@ -135,10 +135,7 @@ public class DoodleFragment extends Fragment {
             doodleView.printImage();
             return true;
          case R.id.backgroundImg:
-        	 Intent i = new Intent(
-                     Intent.ACTION_PICK,
-                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
+        	 Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         	 startActivityForResult(i, RESULT_LOAD_IMAGE);
              return true;
       }
@@ -154,42 +151,19 @@ public class DoodleFragment extends Fragment {
       dialogOnScreen = visible;  
    }
    
-/*
    @Override
    public void onActivityResult(int requestCode, int resultCode, Intent data) {
        super.onActivityResult(requestCode, resultCode, data);
-       if (requestCode == LOAD_IMAGE_RESULTS && resultCode == Activity.RESULT_OK && data != null) {
-           pickedImage = data.getData();
-           imageView.setImageURI(pickedImage);
-       }
-   }
-   
-   public static Uri getImg() {
-	   return pickedImage;
-   }
-   */
-   
-   @Override
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       super.onActivityResult(requestCode, resultCode, data);
-
        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
            Uri selectedImage = data.getData();
            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-           Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                   filePathColumn, null, null, null);
+           Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
            cursor.moveToFirst();
-
            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
            String picturePath = cursor.getString(columnIndex);
            cursor.close();
-
-           //ImageView imageView = (ImageView) findViewById(R.id.imgview);
+           
            imgView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
        }
-
-
    }
 }
