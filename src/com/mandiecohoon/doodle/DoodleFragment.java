@@ -31,9 +31,9 @@ public class DoodleFragment extends Fragment {
    private float currentAcceleration; 
    private float lastAcceleration; 
    private boolean dialogOnScreen = false;
-   private static Uri pickedImage;
-   private ImageView imgView;
-   private static int RESULT_LOAD_IMAGE = 1;
+   
+   private static final int RESULT_LOAD_IMAGE = 1;
+   private View vw;
    
    private static final int ACCELERATION_THRESHOLD = 100000;
 
@@ -41,9 +41,9 @@ public class DoodleFragment extends Fragment {
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       super.onCreateView(inflater, container, savedInstanceState);    
       View view = inflater.inflate(R.layout.fragment_doodle, container, false);
-               
+           
       setHasOptionsMenu(true);
-      ImageView imgView = (ImageView) view.findViewById(R.id.imgview);
+      vw = view;
       doodleView = (DoodleView) view.findViewById(R.id.doodleView);
       acceleration = 0.00f; 
       currentAcceleration = SensorManager.GRAVITY_EARTH;    
@@ -157,13 +157,16 @@ public class DoodleFragment extends Fragment {
        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
            Uri selectedImage = data.getData();
            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+           
            Cursor cursor = getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
            cursor.moveToFirst();
+           
            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
            String picturePath = cursor.getString(columnIndex);
            cursor.close();
            
-           imgView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+           ImageView imageView = (ImageView) vw.findViewById(R.id.imgview);
+           imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
        }
    }
 }
