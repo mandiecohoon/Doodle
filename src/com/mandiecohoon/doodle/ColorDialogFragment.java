@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
   
@@ -58,7 +59,7 @@ public class ColorDialogFragment extends DialogFragment {
       builder.setNegativeButton(R.string.button_set_background, new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int id) {
         	  doodleView.setBackgroundColor(color);
-        	  
+        	  DoodleFragment.setImageViewBackgroundColor(color);
           } 
        } 
     );

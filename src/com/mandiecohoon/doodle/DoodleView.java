@@ -32,7 +32,6 @@ public class DoodleView extends View {
    private final Paint paintScreen;
    private final Paint paintLine; 
    private int backgroundColor;
-   private ImageView imgView;
    
    private final Map<Integer, Path> pathMap = new HashMap<Integer, Path>(); 
    private final Map<Integer, Point> previousPointMap = new HashMap<Integer, Point>();
@@ -86,7 +85,6 @@ public class DoodleView extends View {
    
    public void setBackgroundColor(int color) {
 	   backgroundColor = color;
-	   bitmapCanvas.drawColor(backgroundColor);
    }
    public int getBackgroundColor() {
 	   return backgroundColor;

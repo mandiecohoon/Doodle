@@ -37,11 +37,11 @@ public final class R {
         public static final int colorDialogGridLayout=0x7f080001;
         public static final int colorView=0x7f08000a;
         public static final int doodleFragment=0x7f080000;
-        public static final int doodleView=0x7f08000b;
+        public static final int doodleView=0x7f08000c;
         public static final int eraser=0x7f080012;
         public static final int greenSeekBar=0x7f080007;
         public static final int greenTextView=0x7f080006;
-        public static final int imgview=0x7f08000c;
+        public static final int imageView=0x7f08000b;
         public static final int lineWidth=0x7f080011;
         public static final int lineWidthDialogGridLayout=0x7f08000d;
         public static final int print=0x7f080016;

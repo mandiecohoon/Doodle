@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class DoodleFragment extends Fragment {
    private DoodleView doodleView;
@@ -33,7 +34,7 @@ public class DoodleFragment extends Fragment {
    private boolean dialogOnScreen = false;
    
    private static final int RESULT_LOAD_IMAGE = 1;
-   private View vw;
+   private static View vw;
    
    private static final int ACCELERATION_THRESHOLD = 100000;
 
@@ -44,13 +45,24 @@ public class DoodleFragment extends Fragment {
            
       setHasOptionsMenu(true);
       vw = view;
+      final DoodleView DoodleView = getDoodleView();
       doodleView = (DoodleView) view.findViewById(R.id.doodleView);
       acceleration = 0.00f; 
       currentAcceleration = SensorManager.GRAVITY_EARTH;    
       lastAcceleration = SensorManager.GRAVITY_EARTH;
       return view;
    }
-      
+     
+   public void clearBackground() {
+	   ImageView iv = (ImageView) getView().findViewById(R.id.imageView);
+       iv.setImageResource(android.R.color.transparent);
+   }
+   
+   public static void setImageViewBackgroundColor(int color) {
+	   ImageView iv = (ImageView) vw.findViewById(R.id.imageView);
+	   iv.setBackgroundColor(color);
+   }
+   
    @Override
    public void onStart() {
       super.onStart();
@@ -137,6 +149,7 @@ public class DoodleFragment extends Fragment {
          case R.id.backgroundImg:
         	 Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         	 startActivityForResult(i, RESULT_LOAD_IMAGE);
+        	 doodleView.setDrawingColor(Color.WHITE);
              return true;
       }
 
@@ -165,7 +178,7 @@ public class DoodleFragment extends Fragment {
            String picturePath = cursor.getString(columnIndex);
            cursor.close();
            
-           ImageView imageView = (ImageView) vw.findViewById(R.id.imgview);
+           ImageView imageView = (ImageView) vw.findViewById(R.id.imageView);
            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
        }
    }

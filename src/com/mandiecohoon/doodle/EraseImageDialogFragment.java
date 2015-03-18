@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 public class EraseImageDialogFragment extends DialogFragment {
    @Override
@@ -19,6 +21,7 @@ public class EraseImageDialogFragment extends DialogFragment {
       builder.setPositiveButton(R.string.button_erase, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                getDoodleFragment().getDoodleView().clear();
+               getDoodleFragment().clearBackground();
             } 
          } 
       );

@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/menuitem_backgroundImg"
+        android:scaleType="fitXY" />
+
     <view
         android:id="@+id/doodleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="com.mandiecohoon.doodle.DoodleView" />
-
-    <ImageView
-        android:id="@+id/imgview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         />
 
 </FrameLayout>
