@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class DoodleView extends View {   
@@ -30,6 +32,7 @@ public class DoodleView extends View {
    private final Paint paintScreen;
    private final Paint paintLine; 
    private int backgroundColor;
+   private ImageView imgView;
    
    private final Map<Integer, Path> pathMap = new HashMap<Integer, Path>(); 
    private final Map<Integer, Point> previousPointMap = new HashMap<Integer, Point>();
@@ -48,6 +51,7 @@ public class DoodleView extends View {
       paintLine.setStrokeCap(Paint.Cap.ROUND);
       
       singleTapDetector = new GestureDetector(getContext(), singleTapListener);
+      
    } 
 
    @Override 
@@ -60,7 +64,7 @@ public class DoodleView extends View {
    public void clear() {
       pathMap.clear();
       previousPointMap.clear();
-      bitmap.eraseColor(backgroundColor); 
+      bitmap.eraseColor(backgroundColor);
       invalidate();
    }
    
@@ -83,12 +87,11 @@ public class DoodleView extends View {
    public void setBackgroundColor(int color) {
 	   backgroundColor = color;
 	   bitmapCanvas.drawColor(backgroundColor);
-	   
    }
    public int getBackgroundColor() {
 	   return backgroundColor;
    }
-
+   
    @Override
    protected void onDraw(Canvas canvas) {
       canvas.drawBitmap(bitmap, 0, 0, paintScreen);
@@ -119,10 +122,11 @@ public class DoodleView extends View {
    private SimpleOnGestureListener singleTapListener = new SimpleOnGestureListener() {
          @Override
          public boolean onSingleTapUp(MotionEvent e) {
-            if ((getSystemUiVisibility() & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0)
-               hideSystemBars();
-            else
-               showSystemBars();
+            if ((getSystemUiVisibility() & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0) {
+               //hideSystemBars();
+            } else {
+               //showSystemBars();
+            }
             return true;
          }            
       };

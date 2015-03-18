@@ -2,20 +2,28 @@
 // Fragment in which the DoodleView is displayed
 package com.mandiecohoon.doodle;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 public class DoodleFragment extends Fragment {
    private DoodleView doodleView;
@@ -23,6 +31,9 @@ public class DoodleFragment extends Fragment {
    private float currentAcceleration; 
    private float lastAcceleration; 
    private boolean dialogOnScreen = false;
+   private static Uri pickedImage;
+   private ImageView imgView;
+   private static int RESULT_LOAD_IMAGE = 1;
    
    private static final int ACCELERATION_THRESHOLD = 100000;
 
@@ -32,7 +43,7 @@ public class DoodleFragment extends Fragment {
       View view = inflater.inflate(R.layout.fragment_doodle, container, false);
                
       setHasOptionsMenu(true);
-
+      ImageView imgView = (ImageView) view.findViewById(R.id.imgview);
       doodleView = (DoodleView) view.findViewById(R.id.doodleView);
       acceleration = 0.00f; 
       currentAcceleration = SensorManager.GRAVITY_EARTH;    
@@ -123,6 +134,13 @@ public class DoodleFragment extends Fragment {
          case R.id.print:     
             doodleView.printImage();
             return true;
+         case R.id.backgroundImg:
+        	 Intent i = new Intent(
+                     Intent.ACTION_PICK,
+                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        	 startActivityForResult(i, RESULT_LOAD_IMAGE);
+             return true;
       }
 
       return super.onOptionsItemSelected(item);
@@ -134,5 +152,44 @@ public class DoodleFragment extends Fragment {
 
    public void setDialogOnScreen(boolean visible) {
       dialogOnScreen = visible;  
+   }
+   
+/*
+   @Override
+   public void onActivityResult(int requestCode, int resultCode, Intent data) {
+       super.onActivityResult(requestCode, resultCode, data);
+       if (requestCode == LOAD_IMAGE_RESULTS && resultCode == Activity.RESULT_OK && data != null) {
+           pickedImage = data.getData();
+           imageView.setImageURI(pickedImage);
+       }
+   }
+   
+   public static Uri getImg() {
+	   return pickedImage;
+   }
+   */
+   
+   @Override
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
+       super.onActivityResult(requestCode, resultCode, data);
+
+       if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+           Uri selectedImage = data.getData();
+           String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+           Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                   filePathColumn, null, null, null);
+           cursor.moveToFirst();
+
+           int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+           String picturePath = cursor.getString(columnIndex);
+           cursor.close();
+
+           //ImageView imageView = (ImageView) findViewById(R.id.imgview);
+           imgView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+       }
+
+
    }
 }
