@@ -86,8 +86,12 @@ public class DoodleView extends View {
    public void setBackgroundColor(int color) {
 	   backgroundColor = color;
    }
-   public int getBackgroundColor() {
-	   return backgroundColor;
+   public int getBackgroundColor(Boolean img) {
+	   if (img) {
+		   return Color.WHITE;
+	   } else {
+		   return backgroundColor;
+	   }
    }
    
    @Override

@@ -35,6 +35,7 @@ public class DoodleFragment extends Fragment {
    
    private static final int RESULT_LOAD_IMAGE = 1;
    private static View vw;
+   private static Boolean imgFlag = false;
    
    private static final int ACCELERATION_THRESHOLD = 100000;
 
@@ -56,11 +57,18 @@ public class DoodleFragment extends Fragment {
    public void clearBackground() {
 	   ImageView iv = (ImageView) getView().findViewById(R.id.imageView);
        iv.setImageResource(android.R.color.transparent);
+       iv.setBackgroundColor(Color.WHITE);
+       imgFlag = false;
    }
    
    public static void setImageViewBackgroundColor(int color) {
 	   ImageView iv = (ImageView) vw.findViewById(R.id.imageView);
+	   iv.setImageResource(android.R.color.transparent);
 	   iv.setBackgroundColor(color);
+   }
+   
+   public static void setImgFlag() {
+	   imgFlag = false;
    }
    
    @Override
@@ -135,7 +143,7 @@ public class DoodleFragment extends Fragment {
             widthdialog.show(getFragmentManager(), "line width dialog");
             return true;
          case R.id.eraser:
-            doodleView.setDrawingColor(doodleView.getBackgroundColor());
+            doodleView.setDrawingColor(doodleView.getBackgroundColor(imgFlag));
             return true;
          case R.id.clear:
             confirmErase();
@@ -149,7 +157,7 @@ public class DoodleFragment extends Fragment {
          case R.id.backgroundImg:
         	 Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         	 startActivityForResult(i, RESULT_LOAD_IMAGE);
-        	 doodleView.setDrawingColor(Color.WHITE);
+        	 imgFlag = true;
              return true;
       }
 

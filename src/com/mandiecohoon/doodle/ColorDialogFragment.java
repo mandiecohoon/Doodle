@@ -60,6 +60,7 @@ public class ColorDialogFragment extends DialogFragment {
           public void onClick(DialogInterface dialog, int id) {
         	  doodleView.setBackgroundColor(color);
         	  DoodleFragment.setImageViewBackgroundColor(color);
+        	  DoodleFragment.setImgFlag();
           } 
        } 
     );
