@@ -125,9 +125,9 @@ public class DoodleView extends View {
          @Override
          public boolean onSingleTapUp(MotionEvent e) {
             if ((getSystemUiVisibility() & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0) {
-               //hideSystemBars();
+               hideSystemBars();
             } else {
-               //showSystemBars();
+               showSystemBars();
             }
             return true;
          }            
