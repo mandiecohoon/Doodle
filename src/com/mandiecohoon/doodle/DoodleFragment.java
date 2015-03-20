@@ -143,7 +143,7 @@ public class DoodleFragment extends Fragment {
             widthdialog.show(getFragmentManager(), "line width dialog");
             return true;
          case R.id.eraser:
-            doodleView.setDrawingColor(doodleView.getBackgroundColor(imgFlag));
+            doodleView.setDrawingColor(doodleView.getBackgroundColor(imgFlag), 0, 0, 0);
             return true;
          case R.id.clear:
             confirmErase();

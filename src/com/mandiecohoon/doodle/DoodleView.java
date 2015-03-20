@@ -22,6 +22,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 public class DoodleView extends View {   
@@ -32,6 +33,7 @@ public class DoodleView extends View {
    private final Paint paintScreen;
    private final Paint paintLine; 
    private int backgroundColor;
+   private int pressure = 1;
    
    private final Map<Integer, Path> pathMap = new HashMap<Integer, Path>(); 
    private final Map<Integer, Point> previousPointMap = new HashMap<Integer, Point>();
@@ -50,7 +52,6 @@ public class DoodleView extends View {
       paintLine.setStrokeCap(Paint.Cap.ROUND);
       
       singleTapDetector = new GestureDetector(getContext(), singleTapListener);
-      
    } 
 
    @Override 
@@ -67,7 +68,10 @@ public class DoodleView extends View {
       invalidate();
    }
    
-   public void setDrawingColor(int color) {
+   public void setDrawingColor(int color, int red, int blue, int green) {
+	  if (red != 0 && blue != 0 && green != 0) {
+		  color = Color.argb(getPressure(), red, blue, green);
+	  }
       paintLine.setColor(color);
    } 
 
@@ -156,7 +160,7 @@ public class DoodleView extends View {
    private void touchStarted(float x, float y, int lineID) {
       Path path; 
       Point point;
-
+      
       if (pathMap.containsKey(lineID)) {
          path = pathMap.get(lineID);
          path.reset();
@@ -172,12 +176,24 @@ public class DoodleView extends View {
       point.x = (int) x;
       point.y = (int) y;
    }
-
+   
+   public void setPressure(int pressure) {
+	   this.pressure = pressure;
+   }
+   
+   public int getPressure() {
+	   return pressure;
+   }
+   
    private void touchMoved(MotionEvent event) {
       for (int i = 0; i < event.getPointerCount(); i++) {
          int pointerID = event.getPointerId(i);
          int pointerIndex = event.findPointerIndex(pointerID);
-            
+         int pressure = (int) event.getPressure();
+         
+         setPressure(pressure);
+         ColorDialogFragment.setPressure(pressure);
+         
          if (pathMap.containsKey(pointerID)) {
             float newX = event.getX(pointerIndex);
             float newY = event.getY(pointerIndex);

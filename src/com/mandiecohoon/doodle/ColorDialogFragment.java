@@ -14,13 +14,15 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
   
 public class ColorDialogFragment extends DialogFragment {
-   private SeekBar alphaSeekBar;
+   private static SeekBar alphaSeekBar;
    private SeekBar redSeekBar;
    private SeekBar greenSeekBar;
    private SeekBar blueSeekBar;
    private View colorView;
    private int color;
-   private int backgroundColor;
+   private int red = 00;
+   private int blue = 00;
+   private int green = 00;
    
    @Override
    public Dialog onCreateDialog(Bundle bundle) {
@@ -29,7 +31,7 @@ public class ColorDialogFragment extends DialogFragment {
       builder.setView(colorDialogView);
       
       builder.setTitle(R.string.title_color_dialog);
-      builder.setCancelable(true);               
+      builder.setCancelable(true);  
       
       alphaSeekBar = (SeekBar) colorDialogView.findViewById(R.id.alphaSeekBar);
       redSeekBar = (SeekBar) colorDialogView.findViewById(R.id.redSeekBar);
@@ -42,6 +44,7 @@ public class ColorDialogFragment extends DialogFragment {
       greenSeekBar.setOnSeekBarChangeListener(colorChangedListener);
       blueSeekBar.setOnSeekBarChangeListener(colorChangedListener);
      
+      
       final DoodleView doodleView = getDoodleFragment().getDoodleView();
       color = doodleView.getDrawingColor();
       alphaSeekBar.setProgress(Color.alpha(color));
@@ -51,7 +54,7 @@ public class ColorDialogFragment extends DialogFragment {
       
       builder.setPositiveButton(R.string.button_set_color, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-               doodleView.setDrawingColor(color);
+               doodleView.setDrawingColor(color, red, blue , green);
             } 
          } 
       );
@@ -95,6 +98,9 @@ public class ColorDialogFragment extends DialogFragment {
       public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {      
          if (fromUser)
         	color = Color.argb(alphaSeekBar.getProgress(), redSeekBar.getProgress(), greenSeekBar.getProgress(), blueSeekBar.getProgress());
+         	red = redSeekBar.getProgress();
+         	blue = blueSeekBar.getProgress();
+         	green = greenSeekBar.getProgress();
          	colorView.setBackgroundColor(color);
       } 
       
@@ -106,4 +112,8 @@ public class ColorDialogFragment extends DialogFragment {
       public void onStopTrackingTouch(SeekBar seekBar) {
       }
    };
+   
+   public static void setPressure(int pressure) {
+	   alphaSeekBar.setProgress(pressure);
+   }
 }
