@@ -16,6 +16,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.print.PrintHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
@@ -145,6 +146,11 @@ public class DoodleView extends View {
       int action = event.getActionMasked(); 
       int actionIndex = event.getActionIndex();
       
+      float pressure = event.getPressure();
+      Log.i("touchedmoved", String.valueOf(pressure));
+      setPressure(pressure);
+      ColorDialogFragment.setPressure(pressure);
+      
       if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
          touchStarted(event.getX(actionIndex), event.getY(actionIndex), event.getPointerId(actionIndex));
       } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) {
@@ -177,22 +183,18 @@ public class DoodleView extends View {
       point.y = (int) y;
    }
    
-   public void setPressure(int pressure) {
-	   this.pressure = pressure;
+   public void setPressure(float pressure) {
+	   this.pressure = (int) (pressure * 255);
    }
    
    public int getPressure() {
-	   return pressure;
+	   return (int) pressure;
    }
    
    private void touchMoved(MotionEvent event) {
-      for (int i = 0; i < event.getPointerCount(); i++) {
+	   for (int i = 0; i < event.getPointerCount(); i++) {
          int pointerID = event.getPointerId(i);
          int pointerIndex = event.findPointerIndex(pointerID);
-         int pressure = (int) event.getPressure();
-         
-         setPressure(pressure);
-         ColorDialogFragment.setPressure(pressure);
          
          if (pathMap.containsKey(pointerID)) {
             float newX = event.getX(pointerIndex);

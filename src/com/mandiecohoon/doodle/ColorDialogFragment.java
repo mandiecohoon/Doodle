@@ -8,6 +8,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -113,7 +114,10 @@ public class ColorDialogFragment extends DialogFragment {
       }
    };
    
-   public static void setPressure(int pressure) {
-	   alphaSeekBar.setProgress(pressure);
+   public static void setPressure(float pressure) {
+	   Log.i("ColorDialogFrag set pressure", String.valueOf(pressure));
+	   pressure = pressure * 255;
+	   
+	   alphaSeekBar.setProgress((int) pressure);
    }
 }
